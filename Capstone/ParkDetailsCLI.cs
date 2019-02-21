@@ -12,14 +12,10 @@ namespace Capstone
         private ICampgroundsDAO campgroundDAO;
         private IParksDAO parkDAO;
 
-        public ParkDetailsCLI()
-        {
-
-        }
-      
+        
         public ParkDetailsCLI(ICampgroundsDAO campgroundsDAO, IParksDAO parkDAO)
         {
-            this.campgroundDAO = campgroundDAO;
+            this.campgroundDAO = campgroundsDAO;
             this.parkDAO = parkDAO;
         }
         public ICampgroundsDAO IcampgroundsDAO { get; }
