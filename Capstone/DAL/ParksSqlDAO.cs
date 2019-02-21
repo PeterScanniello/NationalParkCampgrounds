@@ -26,7 +26,7 @@ namespace Capstone.DAL
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM park WHERE park_id = @enteredParkId;", conn);
-                    cmd.Parameters.AddWithValue("@enteredParkId", mainChoiceInt);
+                    cmd.Parameters.AddWithValue("@enteredParkId", parkId);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -35,6 +35,7 @@ namespace Capstone.DAL
                         Park park = ConvertReaderToPark(reader);
                         parks.Add(park);
                     }
+                    
                 }
             }
             catch (SqlException ex)

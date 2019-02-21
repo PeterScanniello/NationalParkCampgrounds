@@ -10,7 +10,7 @@ namespace Capstone
     public class MainMenuCLI : CLIHelper
     {
         private IParksDAO parkDAO;
-        //private ICampgroundsDAO campgroundDAO;
+        
         //private ISitesDAO siteDAO;
         //private IReservationsDAO reservationDAO;
 
@@ -42,7 +42,8 @@ namespace Capstone
                     if (mainChoice == "q" || mainChoice == "Q")
                     {
                         Console.Clear();
-                        return;
+                        break;
+
                     }
                     else
                     {
@@ -58,6 +59,9 @@ namespace Capstone
                                 Console.WriteLine($"Area: {park.Area}");
                                 Console.WriteLine($"Annual Visitors: {park.Visitors}");
                                 Console.WriteLine($"{park.Description}");
+
+                                ParkDetailsCLI parkDetailsMenu = new ParkDetailsCLI();
+                                parkDetailsMenu.ParkDetailsMenu(mainChoiceInt);
                             }
                         }
                     }
@@ -68,7 +72,7 @@ namespace Capstone
                     Console.WriteLine(ex.Message);
                 }
 
-                break;
+                
 
 
 
