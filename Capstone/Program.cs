@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Capstone.DAL;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 
@@ -16,6 +17,14 @@ namespace Capstone
             IConfigurationRoot configuration = builder.Build();
 
             string connectionString = configuration.GetConnectionString("Project");
+
+            IParksDAO parkDAO = new ParksSqlDAO(connectionString);
+            //ICampgroundsDAO campgroundDAO = new CampgroundsSqlDAO(connectionString);
+            //ISitesDAO siteDAO = new SitesSqlDAO(connectionString);
+            //IReservationsDAO reservationDAO = new ReservationsSqlDAO(connectionString);
+
+            MainMenuCLI mainMenuCLI = new MainMenuCLI(parkDAO/*, campgroundDAO, siteDAO, reservationDAO*/);
+            mainMenuCLI.RunMainMenu();
         }
     }
 }
