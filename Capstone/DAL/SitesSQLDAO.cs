@@ -23,7 +23,7 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(@"SELECT site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities
+                    SqlCommand cmd = new SqlCommand(@"SELECT TOP 5 *
                                 FROM campground
                                 JOIN site ON campground.campground_id = site.campground_id
                                 LEFT JOIN reservation ON site.site_id = reservation.site_id
@@ -40,8 +40,10 @@ namespace Capstone.DAL
                                 OR ((reservation.from_date >= Convert(datetime, @enteredFromDate))
                                 AND (reservation.from_date <= Convert(datetime, @enteredToDate)))
                                 OR ((reservation.to_date >= Convert(datetime, @enteredFromDate))
-                                AND (reservation.to_date <= Convert(datetime, @enteredToDate)))))
-                                GROUP BY site.SiteNumber, site.MaxOccupancy, site.IsAccessible, site.MaxRvLength, site.HasUtilities;", conn);
+                                AND (reservation.to_date <= Convert(datetime, @enteredToDate)))));", conn);
+                                
+                                
+                                
                     cmd.Parameters.AddWithValue("@enteredCampgroundId", campgroundId);
                     cmd.Parameters.AddWithValue("@enteredFromDate", fromDate);
                     cmd.Parameters.AddWithValue("@enteredToDate", toDate);
