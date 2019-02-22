@@ -11,14 +11,17 @@ namespace Capstone
     {
         private ICampgroundsDAO campgroundDAO;
         private IParksDAO parkDAO;
+        private ISitesDAO siteDAO;
 
-        
-        public ParkDetailsCLI(ICampgroundsDAO campgroundsDAO, IParksDAO parkDAO)
+
+
+        public ParkDetailsCLI(ICampgroundsDAO campgroundsDAO, IParksDAO parkDAO, ISitesDAO siteDAO)
         {
             this.campgroundDAO = campgroundsDAO;
             this.parkDAO = parkDAO;
+            this.siteDAO = siteDAO;
         }
-        public ICampgroundsDAO IcampgroundsDAO { get; }
+        //public ICampgroundsDAO IcampgroundsDAO { get; }
         public void ParkDetailsMenu(int parkId)
         {
             while (true)
@@ -39,7 +42,18 @@ namespace Capstone
                 }
                 if (userSelection == 2)
                 {
-                   // SearchForReservations();
+                    Console.WriteLine("Please enter your preferred campground's number: ");
+                    int selectedCampground = int.Parse(Console.ReadLine());
+                    Console.WriteLine("What is your arrival date? (Enter as YYYY-MM-DD) ");
+                    DateTime selectedFromDate = DateTime.Parse(Console.ReadLine());
+                    Console.WriteLine("What is your departure date? (Enter as YYYY-MM-DD) ");
+                    DateTime selectedToDate = DateTime.Parse(Console.ReadLine());
+                    IList<Site> sites = siteDAO.GetAvailableSites(selectedCampground, selectedFromDate, selectedToDate);
+                    foreach (Site site in sites)
+                    {
+                        Console.WriteLine($"{site.SiteNumber}, {site.MaxOccupancy}, {site.IsAccessible}, {site.MaxRvLength}, {site.HasUtilities}");
+                        // TODO Return cost column (campground.DailyFee * length of res
+                    }
                 }
                 if (userSelection == 3)
                 {

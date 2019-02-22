@@ -11,14 +11,14 @@ namespace Capstone
     {
         private IParksDAO parkDAO;
         private ICampgroundsDAO campgroundDAO;
-        
-        //private ISitesDAO siteDAO;
+        private ISitesDAO siteDAO;
         //private IReservationsDAO reservationDAO;
 
-        public MainMenuCLI(IParksDAO parkDAO, ICampgroundsDAO campgroundDAO)//, ISitesDAO siteDAO, IReservationsDAO reservationDAO*/)
+        public MainMenuCLI(IParksDAO parkDAO, ICampgroundsDAO campgroundDAO, ISitesDAO siteDAO)//, IReservationsDAO reservationDAO*/)
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
+            this.siteDAO = siteDAO;
         }
 
         public IParksDAO IParksDAO { get; }
@@ -62,7 +62,7 @@ namespace Capstone
                                 Console.WriteLine($"Annual Visitors: {park.Visitors}");
                                 Console.WriteLine($"{park.Description}");
 
-                                ParkDetailsCLI parkDetailsMenu = new ParkDetailsCLI(campgroundDAO, parkDAO);
+                                ParkDetailsCLI parkDetailsMenu = new ParkDetailsCLI(campgroundDAO, parkDAO, siteDAO);
                                 parkDetailsMenu.ParkDetailsMenu(mainChoiceInt);
                             }
                         }

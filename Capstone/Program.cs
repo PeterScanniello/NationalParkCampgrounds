@@ -20,10 +20,10 @@ namespace Capstone
 
             IParksDAO parkDAO = new ParksSqlDAO(connectionString);
             ICampgroundsDAO campgroundDAO = new CampGroundsSQLDAO(connectionString);
-            //ISitesDAO siteDAO = new SitesSQLDAO(connectionString);
+            ISitesDAO siteDAO = new SitesSQLDAO(connectionString);
             //IReservationsDAO reservationDAO = new ReservationsSqlDAO(connectionString);
 
-            MainMenuCLI mainMenuCLI = new MainMenuCLI(parkDAO, campgroundDAO);//, siteDAO, reservationDAO*/);
+            MainMenuCLI mainMenuCLI = new MainMenuCLI(parkDAO, campgroundDAO, siteDAO);//, siteDAO, reservationDAO*/);
             mainMenuCLI.RunMainMenu();
         }
     }
