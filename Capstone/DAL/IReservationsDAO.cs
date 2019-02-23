@@ -7,6 +7,6 @@ namespace Capstone.DAL
 {
     public interface IReservationsDAO
     {
-        int CreateNewReservation(int siteSelection, string reservationName, DateTime fromDate, DateTime toDate);
+        int CreateNewReservation(Reservation newReservation);
     }
 }

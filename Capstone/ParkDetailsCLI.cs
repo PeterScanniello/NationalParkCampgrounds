@@ -3,6 +3,7 @@ using Capstone.Models;
 using ProjectOrganizer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Capstone
@@ -30,18 +31,22 @@ namespace Capstone
 
             while (true)
             {
+                Console.WriteLine();
                 Console.WriteLine("1) View Campgrounds");
-                Console.WriteLine("2) Search for Reservations");
+                Console.WriteLine("2) Search for Availability");
                 Console.WriteLine("3) Return to Previous Screen");
 
                 int userSelection = int.Parse(Console.ReadLine());
 
                 if(userSelection == 1)
                 {
-                    
+
+                    Console.WriteLine("".PadRight(5) + "Name".PadRight(30) + "Open".PadRight(20) + "Close".PadRight(20) + "Daily Fee".PadRight(10));
                     foreach (Campground campground in campgrounds)
                     {
-                        Console.WriteLine($"{campground.CampgroundId}, {campground.Name}, {campground.OpenFrom}, {campground.OpenTo}, {campground.DailyFee:C0}");
+                        string openFromMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(campground.OpenFrom);
+                        string openToMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(campground.OpenTo);
+                        Console.WriteLine(campground.CampgroundId.ToString().PadRight(5) + campground.Name.ToString().PadRight(30) + openFromMonth.ToString().PadRight(20) + openToMonth.ToString().PadRight(20) + "$" + campground.DailyFee);
                     }
                 }
                 if (userSelection == 2)
@@ -66,14 +71,14 @@ namespace Capstone
                         if(sites.Count == 0)
                         {
                             Console.WriteLine("There are no available sites, please enter another date range");
-                           
-
                         }
+                        Console.WriteLine("Site ID".PadRight(10) + "Max Occup.".PadRight(15) + "Accessible?".PadRight(15) + "Max RV Length".PadRight(15) + "Utility".PadRight(10) + "Cost".PadRight(10));
                         foreach (Site site in sites)
                         {
-                            Console.WriteLine($"{site.SiteNumber}, {site.MaxOccupancy}, {site.IsAccessible}, {site.MaxRvLength}, {site.HasUtilities}, {totalCost}");
+                            Console.WriteLine(site.SiteId.ToString().PadRight(10) + site.MaxOccupancy.ToString().PadRight(15) + site.IsAccessible.ToString().PadRight(15) + site.MaxRvLength.ToString().PadRight(15) + site.HasUtilities.ToString().PadRight(10) + totalCost.ToString().PadRight(10));
 
-                            Console.WriteLine("1) Search for Available Reservation");
+                            Console.WriteLine();
+                            Console.WriteLine("1) Make a Reservation");
                             Console.WriteLine("2) Return to Previous Screen");
 
                             int reservationSelection = int.Parse(Console.ReadLine());
@@ -83,7 +88,16 @@ namespace Capstone
                                 int siteSelection = int.Parse(Console.ReadLine());
                                 Console.WriteLine("What name should the reservation be made under?");
                                 string reservationName = Console.ReadLine();
-                                int reservationNumber = reservationDAO.CreateNewReservation(siteSelection, reservationName, selectedFromDate, selectedToDate);
+                                Reservation newReservation = new Reservation()
+                                {
+                                    SiteId = siteSelection,
+                                    Name = reservationName,
+                                    FromDate = selectedFromDate,
+                                    ToDate = selectedToDate,
+                                    //CreateDate = DateTime.Now
+                                };
+
+                                int reservationNumber = reservationDAO.CreateNewReservation(newReservation);
                                 Console.WriteLine($"The reservation has been made and the confirmation id is {reservationNumber}");
                             }
                             if (reservationSelection == 2)
