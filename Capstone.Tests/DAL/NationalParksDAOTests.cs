@@ -30,6 +30,12 @@ namespace Capstone.Tests.DAL
         protected int NewCampgroundId { get; private set; }
 
         /// <summary>
+        /// Holds the newly generated site id.
+        /// </summary>
+        //protected int NewSiteId { get; private set; }
+
+
+        /// <summary>
         /// The transaction for each test.
         /// </summary>
         private TransactionScope transaction;
@@ -53,9 +59,10 @@ namespace Capstone.Tests.DAL
                 // If there is a row to read
                 if (reader.Read())
                 {
-                    this.NewParkId = Convert.ToInt32(reader["newParkId"]);
                     this.NewReservationId = Convert.ToInt32(reader["newReservationId"]);
+                    this.NewParkId = Convert.ToInt32(reader["newParkId"]);
                     this.NewCampgroundId = Convert.ToInt32(reader["newCampgroundId"]);
+                    //this.NewSiteId = Convert.ToInt32(reader["newSiteId"]);
                 }
             }
 
