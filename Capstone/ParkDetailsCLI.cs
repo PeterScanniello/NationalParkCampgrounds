@@ -46,7 +46,8 @@ namespace Capstone
                     {
                         string openFromMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(campground.OpenFrom);
                         string openToMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(campground.OpenTo);
-                        Console.WriteLine(campground.CampgroundId.ToString().PadRight(5) + campground.Name.ToString().PadRight(30) + openFromMonth.ToString().PadRight(20) + openToMonth.ToString().PadRight(20) + "$" + campground.DailyFee);
+                        string finalCost = String.Format("{0:C}", campground.DailyFee);
+                        Console.WriteLine(campground.CampgroundId.ToString().PadRight(5) + campground.Name.ToString().PadRight(30) + openFromMonth.ToString().PadRight(20) + openToMonth.ToString().PadRight(20) + finalCost);
                     }
                 }
                 if (userSelection == 2)
@@ -66,6 +67,7 @@ namespace Capstone
 
                         TimeSpan ts = selectedToDate - selectedFromDate;
                         decimal totalCost = ts.Days * campgrounds[selectedCampground - 1].DailyFee;
+                        string convertedCost = String.Format("{0:C}", totalCost);
 
                         IList<Site> sites = siteDAO.GetAvailableSites(selectedCampground, selectedFromDate, selectedToDate);
                         if(sites.Count == 0)
@@ -75,35 +77,36 @@ namespace Capstone
                         Console.WriteLine("Site ID".PadRight(10) + "Max Occup.".PadRight(15) + "Accessible?".PadRight(15) + "Max RV Length".PadRight(15) + "Utility".PadRight(10) + "Cost".PadRight(10));
                         foreach (Site site in sites)
                         {
-                            Console.WriteLine(site.SiteId.ToString().PadRight(10) + site.MaxOccupancy.ToString().PadRight(15) + site.IsAccessible.ToString().PadRight(15) + site.MaxRvLength.ToString().PadRight(15) + site.HasUtilities.ToString().PadRight(10) + totalCost.ToString().PadRight(10));
+                            Console.WriteLine(site.SiteId.ToString().PadRight(10) + site.MaxOccupancy.ToString().PadRight(15) + site.IsAccessible.ToString().PadRight(15) + site.MaxRvLength.ToString().PadRight(15) + site.HasUtilities.ToString().PadRight(10) + convertedCost.PadRight(10));
 
-                            Console.WriteLine();
-                            Console.WriteLine("1) Make a Reservation");
-                            Console.WriteLine("2) Return to Previous Screen");
+                            
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("1) Make a Reservation");
+                        Console.WriteLine("2) Return to Previous Screen");
 
-                            int reservationSelection = int.Parse(Console.ReadLine());
-                            if (reservationSelection == 1)
+                        int reservationSelection = int.Parse(Console.ReadLine());
+                        if (reservationSelection == 1)
+                        {
+                            Console.WriteLine("Which site should be reserved (enter 0 to cancel)");
+                            int siteSelection = int.Parse(Console.ReadLine());
+                            Console.WriteLine("What name should the reservation be made under?");
+                            string reservationName = Console.ReadLine();
+                            Reservation newReservation = new Reservation()
                             {
-                                Console.WriteLine("Which site should be reserved (enter 0 to cancel)");
-                                int siteSelection = int.Parse(Console.ReadLine());
-                                Console.WriteLine("What name should the reservation be made under?");
-                                string reservationName = Console.ReadLine();
-                                Reservation newReservation = new Reservation()
-                                {
-                                    SiteId = siteSelection,
-                                    Name = reservationName,
-                                    FromDate = selectedFromDate,
-                                    ToDate = selectedToDate,
-                                    //CreateDate = DateTime.Now
-                                };
+                                SiteId = siteSelection,
+                                Name = reservationName,
+                                FromDate = selectedFromDate,
+                                ToDate = selectedToDate,
+                                //CreateDate = DateTime.Now
+                            };
 
-                                int reservationNumber = reservationDAO.CreateNewReservation(newReservation);
-                                Console.WriteLine($"The reservation has been made and the confirmation id is {reservationNumber}");
-                            }
-                            if (reservationSelection == 2)
-                            {
-                                break;
-                            }
+                            int reservationNumber = reservationDAO.CreateNewReservation(newReservation);
+                            Console.WriteLine($"The reservation has been made and the confirmation id is {reservationNumber}");
+                        }
+                        if (reservationSelection == 2)
+                        {
+                            break;
                         }
                     }
                     catch (FormatException ex)

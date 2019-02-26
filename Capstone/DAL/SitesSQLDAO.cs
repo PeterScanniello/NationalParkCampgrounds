@@ -23,7 +23,7 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(@"SELECT TOP 5 *
+                    SqlCommand cmd = new SqlCommand(@"SELECT *
                                 FROM campground
                                 JOIN site ON campground.campground_id = site.campground_id
                                 LEFT JOIN reservation ON site.site_id = reservation.site_id
@@ -42,8 +42,6 @@ namespace Capstone.DAL
                                 OR ((reservation.to_date >= Convert(datetime, @enteredFromDate))
                                 AND (reservation.to_date <= Convert(datetime, @enteredToDate)))));", conn);
                                 
-                                
-                                
                     cmd.Parameters.AddWithValue("@enteredCampgroundId", campgroundId);
                     cmd.Parameters.AddWithValue("@enteredFromDate", fromDate);
                     cmd.Parameters.AddWithValue("@enteredToDate", toDate);
@@ -54,6 +52,20 @@ namespace Capstone.DAL
                     {
                         Site site = ConvertReaderToSite(reader);
                         sites.Add(site);
+                    }
+                    if (sites.Count >= 2)
+                    {
+                        for (int i = 1; i < sites.Count; i++)
+                        {
+                            if (sites[i].SiteId == sites[i - 1].SiteId)
+                            {
+                                sites.Remove(sites[i]);
+                            }
+                        }
+                    }
+                    if (sites.Count > 5)
+                    {
+                        sites.RemoveRange(5, sites.Count - 5);
                     }
                 }
             }

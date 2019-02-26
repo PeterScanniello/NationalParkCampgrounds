@@ -19,6 +19,7 @@ namespace Capstone
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
             this.siteDAO = siteDAO;
+            this.reservationDAO = reservationDAO;
         }
 
         public IParksDAO IParksDAO { get; }
